@@ -23,6 +23,7 @@
 
 # SQLite
 *.sqlite
+sqlite*
 
 # JetBrains
 .idea/
