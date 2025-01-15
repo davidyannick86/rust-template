@@ -1,0 +1,7 @@
+services:
+  web:
+    container_name: "{{ project-name }}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["./{{project-name}}"]
