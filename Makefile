@@ -22,7 +22,7 @@ fmt: ## Format the project using cargo
 	@cargo fmt
 
 test: ## Test the project using cargo
-	@cargo test
+	@cargo nextest run
 
 build: ## Build the project using cargo
 	@cargo build
