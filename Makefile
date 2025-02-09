@@ -36,6 +36,9 @@ run: ## Run the project using cargo
 doc: ## Generate the documentation using cargo
 	cargo doc --no-deps --open
 
+all: ## Format, lint, clean, and build the project using cargo
+	clean fmt lint test run
+
 bump: ## Bump the version in Cargo.toml
 	@echo "Enter the new version (e.g., 0.2.1): "; \
 	read version; \
