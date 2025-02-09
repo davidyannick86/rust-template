@@ -11,7 +11,7 @@ show-platforms: ## Show platforms that can be added
 	@rustup target list
 
 clean: ## Clean the project using cargo
-	cargo clean
+	@cargo clean
 
 lint: ## Lint the project using cargo
 	@rustup component add clippy 2> /dev/null
@@ -19,22 +19,22 @@ lint: ## Lint the project using cargo
 
 fmt: ## Format the project using cargo
 	@rustup component add rustfmt 2> /dev/null
-	cargo fmt
+	@cargo fmt
 
 test: ## Test the project using cargo
-	cargo test
+	@cargo test
 
 build: ## Build the project using cargo
-	cargo build
+	@cargo build
 
 release: ## Build the project using cargo
-	cargo build --release
+	@cargo build --release
 
 run: ## Run the project using cargo
-	cargo run
+	@cargo run
 
 doc: ## Generate the documentation using cargo
-	cargo doc --no-deps --open
+	@cargo doc --no-deps --open
 
 all: ## Format, lint, clean, and build the project using cargo
 	$(MAKE) fmt; \
