@@ -37,7 +37,11 @@ doc: ## Generate the documentation using cargo
 	cargo doc --no-deps --open
 
 all: ## Format, lint, clean, and build the project using cargo
-	clean fmt lint test run
+	$(MAKE) fmt; \
+	$(MAKE) lint; \
+	$(MAKE) clean; \
+	$(MAKE) build; \
+	$(MAKE) run
 
 bump: ## Bump the version in Cargo.toml
 	@echo "Enter the new version (e.g., 0.2.1): "; \
