@@ -1,53 +1,63 @@
-.PHONY: all build check clean doc run test watch release
+SHELL := /bin/zsh
 
-# Default target
-all: build
+.PHONY: help
 
-# Build the project in debug mode
-build:
-	cargo build
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}{printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+	@echo "\nAvailable platforms:"
+	@rustup target list --installed
 
-# Check if the project compiles
-check:
-	cargo check
+show-platforms: ## Show platforms that can be added
+	@rustup target list
 
-# Clean build artifacts
-clean:
+clean: ## Clean the project using cargo
 	cargo clean
 
-# Generate documentation
-doc:
-	cargo doc --no-deps
-	cargo doc --open
+lint: ## Lint the project using cargo
+	@rustup component add clippy 2> /dev/null
+	cargo clippy
 
-# Run the project
-run:
-	cargo run
-
-# Run tests
-test:
-	cargo test
-
-# Watch for changes and rebuild
-watch:
-	cargo watch -x build
-
-# Build with release optimization
-release:
-	cargo build --release
-
-# Format code
-fmt:
+fmt: ## Format the project using cargo
+	@rustup component add rustfmt 2> /dev/null
 	cargo fmt
 
-# Run clippy lints
-lint:
-	cargo clippy -- -D warnings
+test: ## Test the project using cargo
+	cargo test
 
-# Update dependencies
-update:
-	cargo update
+build: ## Build the project using cargo
+	cargo build
 
-# Build and run in release mode
-run-release: release
-	cargo run --release
+release: ## Build the project using cargo
+	cargo build --release
+
+run: ## Run the project using cargo
+	cargo run
+
+doc: ## Generate the documentation using cargo
+	cargo doc --no-deps --open
+
+bump: ## Bump the version in Cargo.toml
+	@echo "Enter the new version (e.g., 0.2.1): "; \
+	read version; \
+	echo "New version: $$version"; \
+	sed -i '' "s/^version = \".*\"/version = \"$$version\"/" Cargo.toml; \
+	echo "Version bumped to $$version in Cargo.toml"
+
+final: ## Format, lint, clean, and build the project in release mode for a specified platform
+	@echo "Enter the target platform (default: aarch64-apple-darwin):"; \
+	read platform; \
+	if [ -z "$$platform" ]; then \
+		platform="aarch64-apple-darwin"; \
+	fi; \
+	if ! rustup target list --installed | grep -q "$$platform"; then \
+		echo "Invalid platform: $$platform"; \
+		exit 1; \
+	fi; \
+	echo "Using platform: $$platform"; \
+	$(MAKE) fmt; \
+	$(MAKE) lint; \
+	$(MAKE) clean; \
+	cargo clean; \
+	cargo build --release --target="$$platform"
+
+
