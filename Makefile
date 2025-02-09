@@ -21,6 +21,9 @@ fmt: ## Format the project using cargo
 	@rustup component add rustfmt 2> /dev/null
 	@cargo fmt
 
+runlog: ## Run the project using cargo with log level info
+	@RUST_LOG=info cargo run    
+
 test: ## Test the project using cargo
 	@cargo nextest run
 
